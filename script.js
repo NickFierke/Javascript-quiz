@@ -31,7 +31,7 @@ var startTime = 30;
 
 function startQuiz() {
     if (pause === 0) {
-        pause = setInterval(function() {
+        pause = setInterval(function () {
             startTime--;
             timeLeft.textContent = "Time: " + startTime;
             if (startTime <= 0) {
@@ -61,14 +61,14 @@ function grade(event) {
         console.log("Wrong")
         startTime = startTime - 10
     }
-    if(score < 0) {
+    if (score < 0) {
         score = 0
     }
     index++
-    if(index == questions.length) {
+    if (index == questions.length) {
         endQuiz()
     } else {
-        startQuiz(index) 
+        startQuiz(index)
     }
 }
 
@@ -80,19 +80,24 @@ function endQuiz() {
     input.placeholder = "Please Enter initials..."
     quiz.append(input)
     submitBtn.innerHTML = "Submit"
-    submitBtn.addEventListener("click", saveInitials)
     quiz.append(submitBtn)
-}
-
-function saveInitials() {
-    var initials = input.value
-    var allScore = []
-    var finalOutput = {
-        initials: initials,
-        score: score
-    }
-    allScore.push(finalOutput)
-    localStorage.setItem("scores", JSON.stringify(allScore))
+    submitBtn.addEventListener("click", function () {
+        var scores = localStorage.getItem("scores")
+        if (scores === null) {
+            scores = []
+        } else {
+            scores = JSON.parse(scores)
+        }
+        var initials = input.value;
+        var points = score;
+        var pack = {
+            intials: initials,
+            score: points
+        }
+        var newScore = JSON.stringify(pack)
+        localStorage.setItem("scores", newScore)
+        window.location.replace("scores.html")
+    })
 }
 
 
